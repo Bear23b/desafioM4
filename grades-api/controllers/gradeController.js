@@ -17,7 +17,7 @@ const create = async (req, res) => {
 
     res.send(data)
   
-    logger.info(`POST /grade - ${JSON.stringify()}`);
+    logger.info(`POST /grade - ${JSON.stringify(req.body)}`);
   } catch (error) {
     res
       .status(500)
@@ -48,16 +48,18 @@ const findAll = async (req, res) => {
 };
 
 const findOne = async (req, res) => {
-  const id = req.params.id;
+  const _id = req.params.id;
+
+  console.log(`meu id: ${_id}\n\n`)
 
   try {
    
-    const data = await Grades.findOne({id});
+    const data = await Grades.findById({_id});
 
     res.send(data);
-    logger.info(`GET /grade - ${id}`);
+    logger.info(`GET /grade - ${_id}`);
   } catch (error) {
-    res.status(500).send({ message: 'Erro ao buscar o Grade id: ' + id });
+    res.status(500).send({ message: 'Erro ao buscar o Grade id: ' + _id });
     logger.error(`GET /grade - ${JSON.stringify(error.message)}`);
   }
 };
@@ -69,41 +71,41 @@ const update = async (req, res) => {
     });
   }
 
-  const id = req.params.id;
+  const _id = req.params.id;
 
   try {
 
-    const data = await Grades.findByIdAndUpdate({id}, req.body);
+    const data = await Grades.findByIdAndUpdate({_id}, req.body);
 
-    res.send({ message: 'Grade atualizado com sucesso' },data);
+    res.send({ message: 'Grade atualizado com sucesso ' +req.body.name});
 
-    logger.info(`PUT /grade - ${id} - ${JSON.stringify(req.body)}`);
+    logger.info(`PUT /grade - ${_d} - ${JSON.stringify(req.body)}`);
   } catch (error) {
-    res.status(500).send({ message: 'Erro ao atualizar a Grade id: ' + id });
+    res.status(500).send({ message: 'Erro ao atualizar a Grade id: ' + _id });
     logger.error(`PUT /grade - ${JSON.stringify(error.message)}`);
   }
 };
 
 const remove = async (req, res) => {
-  const id = req.params.id;
+  const _id = req.params.id;
 
   try {
 
 
-    const data = await Grades.findByIdAndRemove({id}, req.body);
+    const data = await Grades.findByIdAndRemove({_id}, req.body);
 
     if(!data){
-       res.status(404).send(`Dado ${id} não encontrado `);
+       res.status(404).send(`Dado ${_id} não encontrado `);
     }else{
       res.send({ message: 'Grade excluido com sucesso' });
     }
    
 
-    logger.info(`DELETE /grade - ${id}`);
+    logger.info(`DELETE /grade - ${_id}`);
   } catch (error) {
     res
       .status(500)
-      .send({ message: 'Nao foi possivel deletar o Grade id: ' + id });
+      .send({ message: 'Nao foi possivel deletar o Grade id: ' + _id });
     logger.error(`DELETE /grade - ${JSON.stringify(error.message)}`);
   }
 };

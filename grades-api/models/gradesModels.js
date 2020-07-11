@@ -23,7 +23,9 @@ export default (mongoose) =>{
         lastModified:{
             type: Date,
             require: true,
-        }
+        },
+
+        versionKey: false,
     });
     
     const grades = mongoose.model("grade", schema,"grade");
